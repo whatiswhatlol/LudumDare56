@@ -8,6 +8,7 @@ public class CharacterController : MonoBehaviour
     public float moveSpeed = 5f;
     public float sprintMultiplier = 2f;
     public float sprintCooldown = 0.5f;
+    public float movementSmoothing = 0.1f; // For smoother movement
 
     [Header("Input Keys")]
     public KeyCode upKey = KeyCode.W;
@@ -26,7 +27,6 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         originalMoveSpeed = moveSpeed;
-        animator = GetComponent<Animator>(); // Ensure you have an Animator component on the player
     }
 
     private void Update()
@@ -43,7 +43,7 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKey(upKey)) movement.y += 1;
         if (Input.GetKey(downKey)) movement.y -= 1;
         if (Input.GetKey(leftKey)) movement.x -= 1;
-        if (Input.GetKey(leftKey)) movement.x += 1;
+        if (Input.GetKey(rightKey)) movement.x += 1;
 
         movement = movement.normalized; // Prevent faster diagonal movement
 
@@ -90,7 +90,13 @@ public class CharacterController : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector2 newPos = (Vector2)transform.position + movement * moveSpeed * Time.fixedDeltaTime;
-        transform.position = newPos;
+        // Calculate the target position based on movement input
+        Vector2 targetPosition = (Vector2)transform.position + movement * moveSpeed * Time.fixedDeltaTime;
+
+        // Smoothly move towards the target position using Vector2.Lerp
+        transform.position = Vector2.Lerp(transform.position, targetPosition, movementSmoothing);
+
+        // Debugging position
+        Debug.Log("New Position: " + transform.position);
     }
 }

@@ -1,51 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
     [Header("Camera Settings")]
-    public Transform target; // The player or object the camera should follow
-    public Vector3 offset = new Vector3(0, 0, -10); // Offset to keep the camera behind the target
-    public float smoothSpeed = 0.125f; // Speed of camera movement
-    public float zoomSpeed = 2f; // Speed at which the camera zooms
-    public float minZoom = 5f; // Minimum zoom level
-    public float maxZoom = 10f; // Maximum zoom level
+    public Transform playerTransform;  // The player or object the camera should follow
+    public float smoothTime = 0.3f;    // Adjust this value to make the camera follow smoother (smaller value = smoother but slower follow)
+    public float followDelay = 0.1f;   // The delay before the camera catches up to the player (bigger value = more delay)
 
-    private Camera cam;
+    private Vector3 velocity = Vector3.zero;  // Used for SmoothDamp
 
-    private void Start()
+    void LateUpdate()
     {
-        cam = GetComponent<Camera>();
-    }
-
-    private void LateUpdate()
-    {
-        FollowTarget();
-        HandleZoom();
-    }
-
-    private void FollowTarget()
-    {
-        if (target == null)
+        if (playerTransform != null)
         {
-            Debug.LogWarning("Target is not assigned to the camera.");
-            return;
-        }
+            // Calculate the target position based on the player's position but keep the camera's z position unchanged
+            Vector3 targetPosition = new Vector3(playerTransform.position.x, playerTransform.position.y, transform.position.z);
 
-        Vector3 desiredPosition = target.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
-    }
-
-    private void HandleZoom()
-    {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scrollInput != 0)
-        {
-            float newZoom = Mathf.Clamp(cam.orthographicSize - scrollInput * zoomSpeed, minZoom, maxZoom);
-            cam.orthographicSize = newZoom;
+            // Only move the camera if the player has moved beyond the follow delay threshold
+            float distance = Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(playerTransform.position.x, playerTransform.position.y));
+            if (distance > followDelay)
+            {
+                // Smoothly move the camera towards the player's position with a delay
+                transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+            }
         }
     }
 }
