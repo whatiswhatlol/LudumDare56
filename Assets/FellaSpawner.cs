@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class FellaSpawner : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class FellaSpawner : MonoBehaviour
     public GameObject bluePrefab;
     public GameObject purplePrefab;
     public GameObject redPrefab;
+    
+
+    NumberOfFellasUpdater NumberOfFellasUpdater;
+
+    public Transform target;
+
+    public List<GameObject> fellas;
+    public List<FellaStats> fellaStats;
 
     private void Awake()
     {
@@ -64,39 +73,59 @@ public class FellaSpawner : MonoBehaviour
             case ColorType.Yellow:
                 if (yellowFellas > 0)
                 {
-                    Instantiate(yellowPrefab, playerPosition, Quaternion.identity);
+                    GameObject temp = Instantiate(yellowPrefab, playerPosition, Quaternion.identity);
                     yellowFellas--;  // Decrease fellas count
+                    temp.GetComponent<AIDestinationSetter>().target = target;
+                    fellas.Add(temp);
+                    fellaStats.Add(temp.GetComponent<FellaStats>());
                 }
                 break;
             case ColorType.Green:
                 if (greenFellas > 0)
                 {
-                    Instantiate(greenPrefab, playerPosition, Quaternion.identity);
+                    GameObject temp = Instantiate(greenPrefab, playerPosition, Quaternion.identity);
                     greenFellas--;
+                    temp.GetComponent<AIDestinationSetter>().target = target;
+                    fellas.Add(temp);
+                    fellaStats.Add(temp.GetComponent<FellaStats>());
+
                 }
                 break;
             case ColorType.Blue:
                 if (blueFellas > 0)
                 {
-                    Instantiate(bluePrefab, playerPosition, Quaternion.identity);
+                    GameObject temp = Instantiate(bluePrefab, playerPosition, Quaternion.identity);
                     blueFellas--;
+                    temp.GetComponent<AIDestinationSetter>().target = target;
+                    fellas.Add(temp);
+                    fellaStats.Add(temp.GetComponent<FellaStats>());
+
                 }
                 break;
             case ColorType.Purple:
                 if (purpleFellas > 0)
                 {
-                    Instantiate(purplePrefab, playerPosition, Quaternion.identity);
+                    GameObject temp = Instantiate(purplePrefab, playerPosition, Quaternion.identity);
                     purpleFellas--;
+                    temp.GetComponent<AIDestinationSetter>().target = target;
+                    fellas.Add(temp);
+                    fellaStats.Add(temp.GetComponent<FellaStats>());
+
                 }
                 break;
             case ColorType.Red:
                 if (redFellas > 0)
                 {
-                    Instantiate(redPrefab, playerPosition, Quaternion.identity);
+                    GameObject temp = Instantiate(redPrefab, playerPosition, Quaternion.identity);
                     redFellas--;
+                    temp.GetComponent<AIDestinationSetter>().target = target;
+                    fellas.Add(temp);
+                    fellaStats.Add(temp.GetComponent<FellaStats>());
+
                 }
                 break;
         }
+        updateNumbers();
     }
 
     // Handle color selection with the scroll wheel
@@ -168,4 +197,20 @@ public class FellaSpawner : MonoBehaviour
 
         Debug.Log("Selected Color (Number Key): " + selectedColor);
     }
+
+
+
+    public void setNumberUpdater(NumberOfFellasUpdater upd)
+    {
+        NumberOfFellasUpdater = upd;
+    }
+
+    private void updateNumbers()
+    {
+        NumberOfFellasUpdater.UpdateNumberOfFellas();
+    }
+
+
+
+
 }
