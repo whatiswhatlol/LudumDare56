@@ -10,6 +10,8 @@ public class EnemyStats : MonoBehaviour
     public float attackCooldown = 2f;  // Cooldown between attacks
     private float lastAttackTime = 0f;
 
+    public float attackRange = 2f;
+
     [Header("Engagement Settings")]
     public float engagementTime = 1f;  // Time required to engage before attacking
     private float timeEngaged = 0f;  // Tracks how long the enemy has been engaged
@@ -57,12 +59,24 @@ public class EnemyStats : MonoBehaviour
     private void AttackClosestFella()
     {
         FellaStats closestFella = FindClosestFella();
-
+        
         if (closestFella != null)
         {
-            Debug.Log(gameObject.name + " attacks " + closestFella.gameObject.name + " for " + attackDamage + " damage.");
-            closestFella.TakeDamage(attackDamage);  // Apply damage to the fella
-            lastAttackTime = Time.time;  // Reset cooldown timer
+            if (Vector3.Distance(transform.position, closestFella.transform.position) < attackRange)
+            {
+                Debug.Log(gameObject.name + " attacks " + closestFella.gameObject.name + " for " + attackDamage + " damage.");
+                closestFella.TakeDamage(attackDamage);  // Apply damage to the fella
+                lastAttackTime = Time.time;  // Reset cooldown timer
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, PlayerStats.Instance.transform.position) < attackRange)
+            {
+                Debug.Log("Hunting Player");
+                PlayerStats.Instance.TakeDamage(attackDamage);  // Apply damage to the fella
+                lastAttackTime = Time.time;  // Reset cooldown timer
+            }
         }
     }
 
@@ -75,6 +89,7 @@ public class EnemyStats : MonoBehaviour
 
         foreach (FellaStats fella in allFellas)
         {
+            if (fella == null) break;
             float distanceToFella = Vector3.Distance(transform.position, fella.transform.position);
             if (distanceToFella < shortestDistance)
             {
@@ -82,15 +97,22 @@ public class EnemyStats : MonoBehaviour
                 closestFella = fella;
             }
         }
+        if (closestFella != null)
+        {
+            if (Vector3.Distance(transform.position, closestFella.transform.position) < Vector3.Distance(transform.position, spawner.transform.position))
+            {
 
-        return closestFella;
+                return closestFella;
+            }
+        }
+        return null;
     }
 
     // Method to handle enemy death
     void Die()
     {
         Debug.Log(gameObject.name + " has died.");
-        EnemySpawner.Instance.OnEnemyDefeated();
+        EnemySpawner.Instance.OnEnemyDefeated(this);
         Destroy(gameObject);
 
 

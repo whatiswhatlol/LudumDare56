@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -79,11 +80,12 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector3 spawnPosition = GetRandomOffScreenPosition();
         GameObject temp = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemyStats.Add(temp.GetComponent<EnemyStats>());   
+        enemyStats.Add(temp.GetComponent<EnemyStats>()); 
+        temp.GetComponent<AIDestinationSetter>().target = PlayerStats.Instance.transform;
     }
 
     // Get a random off-screen position just outside the visible area
-    private Vector3 GetRandomOffScreenPosition()
+    public Vector3 GetRandomOffScreenPosition()
     {
         float xPos = 0f;
         float yPos = 0f;
@@ -122,8 +124,9 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // Call this method when an enemy is defeated to reduce the active enemy count
-    public void OnEnemyDefeated()
+    public void OnEnemyDefeated(EnemyStats dead)
     {
+        enemyStats.Remove(dead);
         activeEnemies--;
     }
 }

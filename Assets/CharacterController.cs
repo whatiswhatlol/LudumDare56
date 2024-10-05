@@ -96,7 +96,5 @@ public class CharacterController : MonoBehaviour
         // Smoothly move towards the target position using Vector2.Lerp
         transform.position = Vector2.Lerp(transform.position, targetPosition, movementSmoothing);
 
-        // Debugging position
-        Debug.Log("New Position: " + transform.position);
-    }
+            }
 }

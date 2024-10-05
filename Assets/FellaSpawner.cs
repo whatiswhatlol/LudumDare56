@@ -27,7 +27,6 @@ public class FellaSpawner : MonoBehaviour
 
     NumberOfFellasUpdater NumberOfFellasUpdater;
 
-    public Transform target;
 
     public List<GameObject> fellas;
     public List<FellaStats> fellaStats;
@@ -75,7 +74,6 @@ public class FellaSpawner : MonoBehaviour
                 {
                     GameObject temp = Instantiate(yellowPrefab, playerPosition, Quaternion.identity);
                     yellowFellas--;  // Decrease fellas count
-                    temp.GetComponent<AIDestinationSetter>().target = target;
                     fellas.Add(temp);
                     fellaStats.Add(temp.GetComponent<FellaStats>());
                 }
@@ -85,7 +83,6 @@ public class FellaSpawner : MonoBehaviour
                 {
                     GameObject temp = Instantiate(greenPrefab, playerPosition, Quaternion.identity);
                     greenFellas--;
-                    temp.GetComponent<AIDestinationSetter>().target = target;
                     fellas.Add(temp);
                     fellaStats.Add(temp.GetComponent<FellaStats>());
 
@@ -96,7 +93,6 @@ public class FellaSpawner : MonoBehaviour
                 {
                     GameObject temp = Instantiate(bluePrefab, playerPosition, Quaternion.identity);
                     blueFellas--;
-                    temp.GetComponent<AIDestinationSetter>().target = target;
                     fellas.Add(temp);
                     fellaStats.Add(temp.GetComponent<FellaStats>());
 
@@ -107,7 +103,6 @@ public class FellaSpawner : MonoBehaviour
                 {
                     GameObject temp = Instantiate(purplePrefab, playerPosition, Quaternion.identity);
                     purpleFellas--;
-                    temp.GetComponent<AIDestinationSetter>().target = target;
                     fellas.Add(temp);
                     fellaStats.Add(temp.GetComponent<FellaStats>());
 
@@ -118,7 +113,6 @@ public class FellaSpawner : MonoBehaviour
                 {
                     GameObject temp = Instantiate(redPrefab, playerPosition, Quaternion.identity);
                     redFellas--;
-                    temp.GetComponent<AIDestinationSetter>().target = target;
                     fellas.Add(temp);
                     fellaStats.Add(temp.GetComponent<FellaStats>());
 
@@ -154,7 +148,6 @@ public class FellaSpawner : MonoBehaviour
             selectedColor = ColorType.Yellow;
         }
 
-        Debug.Log("Selected Color: " + selectedColor);
     }
 
     // Cycle through the colors in backward direction
@@ -168,7 +161,6 @@ public class FellaSpawner : MonoBehaviour
             selectedColor = ColorType.Red;
         }
 
-        Debug.Log("Selected Color: " + selectedColor);
     }
 
     // Handle color selection with number keys
@@ -195,7 +187,6 @@ public class FellaSpawner : MonoBehaviour
             selectedColor = ColorType.Red;
         }
 
-        Debug.Log("Selected Color (Number Key): " + selectedColor);
     }
 
 
