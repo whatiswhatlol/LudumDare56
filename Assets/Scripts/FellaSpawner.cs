@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using static FellaSpawner;
 
 public class FellaSpawner : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public class FellaSpawner : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    private void Start()
+    {
+        UpdateNumUI();
     }
 
     private void Update()
@@ -200,6 +205,129 @@ public class FellaSpawner : MonoBehaviour
     {
         NumberOfFellasUpdater.UpdateNumberOfFellas();
     }
+    
+
+    /// <summary>
+    /// To do, Add protections at input that prevent upgrading red
+    /// </summary>
+    /// <param name="colorType"></param>
+    public void UpgradeFella(FellaSpawner.ColorType colorType) //Gets called every X time for a fella to upgrade Q
+    {
+        //Remove one of color, add one of other
+        addToColor(getNextColor(colorType), 1);
+
+    }
+    public void RestFella(FellaSpawner.ColorType colorType) //Gets called every X time for a fella to upgrade E
+    {
+        //Add one of existing color
+        addToColor(colorType, 2);
+
+    }
+
+    public void UpdateNumUI()
+    {
+        NumberOfFellasUpdater.UpdateNumberOfFellas();
+    }
+    #region color bullshit
+    public int getColorCount(FellaSpawner.ColorType colorType)
+    {
+        if (colorType == ColorType.Yellow)
+        {
+            return yellowFellas;
+        }
+        if (colorType == ColorType.Green)
+        {
+            return greenFellas;
+        }
+        if (colorType == ColorType.Blue)
+        {
+            return blueFellas;
+        }
+        if (colorType == ColorType.Purple)
+        {
+            return purpleFellas;
+        }
+        if (colorType == ColorType.Red)
+        {
+            return redFellas;
+        }
+        else return 0;
+    }
+
+    public FellaSpawner.ColorType getNextColor(FellaSpawner.ColorType colorType)
+    {
+        if (colorType == ColorType.Yellow)
+        {
+            return ColorType.Green;
+        }
+        if (colorType == ColorType.Green)
+        {
+            return ColorType.Blue;
+        }
+        if (colorType == ColorType.Blue)
+        {
+            return ColorType.Purple;
+        }
+        if (colorType == ColorType.Purple)
+        {
+            return ColorType.Red;
+        }
+        if (colorType == ColorType.Red)
+        {
+            return ColorType.Red;
+        }
+        else return colorType;
+    }
+    public void subtractFromColor(FellaSpawner.ColorType colorType, int numToSubtract)
+    {
+        if (colorType == ColorType.Yellow && yellowFellas >= numToSubtract)
+        {
+            yellowFellas -= numToSubtract;
+        }
+        if (colorType == ColorType.Green && greenFellas >= numToSubtract)
+        {
+            greenFellas -= numToSubtract;
+        }
+        if (colorType == ColorType.Blue && blueFellas >= numToSubtract)
+        {
+            blueFellas -= numToSubtract;
+        }
+        if (colorType == ColorType.Purple && purpleFellas >= numToSubtract)
+        {
+            purpleFellas -= numToSubtract;
+        }
+        if (colorType == ColorType.Red && redFellas >= numToSubtract)
+        {
+            redFellas -= numToSubtract;
+        }
+        UpdateNumUI();
+    }
+    public void addToColor(FellaSpawner.ColorType colorType, int numToAdd)
+    {
+        if (colorType == ColorType.Yellow)
+        {
+            yellowFellas += numToAdd;
+        }
+        if (colorType == ColorType.Green)
+        {
+            greenFellas += numToAdd;
+        }
+        if (colorType == ColorType.Blue )
+        {
+            blueFellas += numToAdd;
+        }
+        if (colorType == ColorType.Purple)
+        {
+            purpleFellas += numToAdd;
+        }
+        if (colorType == ColorType.Red )
+        {
+            redFellas += numToAdd;
+        }
+        UpdateNumUI();
+    }
+    #endregion
+
 
 
 

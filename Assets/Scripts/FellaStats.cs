@@ -96,4 +96,5 @@ public class FellaStats : MonoBehaviour
         FellaSpawner.Instance.fellaStats.Remove(this);
         Destroy(gameObject);  // Destroy the fella
     }
+
 }
