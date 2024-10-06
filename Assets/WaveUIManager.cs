@@ -9,6 +9,7 @@ public class WaveUIManager : MonoBehaviour
 
     public TMP_Text Waves;
     public  TMP_Text Enemies;
+    public TMP_Text Score;
     EnemySpawner Spawner;
     void Start()
     {
@@ -20,5 +21,6 @@ public class WaveUIManager : MonoBehaviour
     {
         Waves.text = "Wave: " + Spawner.currentWave;
         Enemies.text = "Enemies Remaining: " + Spawner.activeEnemies;
+        Score.text = "Score: " + PlayerStats.Instance.Score;
     }
 }

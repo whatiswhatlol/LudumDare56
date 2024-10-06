@@ -37,7 +37,7 @@ public class SceneChange : MonoBehaviour
         fadeImage.DOFade(0f, fadeDuration).OnComplete(() =>
         {
             // Once fade is complete, load the Menu scene
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene("Level");
         });
     }
 

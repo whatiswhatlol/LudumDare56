@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 
 // NOTE: Make sure to include the following namespace wherever you want to access Leaderboard Creator methods
-using 
+using Dan.Main;
 
 
     public class LeaderboardManager : MonoBehaviour
@@ -12,13 +12,14 @@ using
 
         // Make changes to this section according to how you're storing the player's score:
         // ------------------------------------------------------------
-        [SerializeField] private ExampleGame _exampleGame;
+        [SerializeField] private PlayerStats player;
 
-        private int Score => _exampleGame.Score;
+        private int Score => player.Score;
         // ------------------------------------------------------------
 
         private void Start()
         {
+        player = PlayerStats.Instance;
             LoadEntries();
         }
 
@@ -26,21 +27,21 @@ using
         {
             // Q: How do I reference my own leaderboard?
             // A: Leaderboards.<NameOfTheLeaderboard>
-
-            Leaderboards.TutorialLeaderboard.GetEntries(entries =>
+            
+            Leaderboards.LD.GetEntries(entries =>
             {
                 foreach (var t in _entryTextObjects)
                     t.text = "";
 
                 var length = Mathf.Min(_entryTextObjects.Length, entries.Length);
                 for (int i = 0; i < length; i++)
-                    _entryTextObjects[i].text = $"{entries[i].Rank}. {entries[i].Username} - {entries[i].Score}";
+                    _entryTextObjects[i].text = $"{entries[i].Rank}. {entries[i].Username}: {entries[i].Score}";
             });
         }
 
         public void UploadEntry()
         {
-            Leaderboards.TutorialLeaderboard.UploadNewEntry(_usernameInputField.text, Score, isSuccessful =>
+            Leaderboards.LD.UploadNewEntry(_usernameInputField.text, Score, isSuccessful =>
             {
                 if (isSuccessful)
                     LoadEntries();

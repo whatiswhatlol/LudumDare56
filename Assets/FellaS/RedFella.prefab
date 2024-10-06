@@ -146,7 +146,7 @@ MonoBehaviour:
   maxHealth: 120
   attackDamage: 90
   attackCooldown: 1
-  lifeSpan: 20
+  lifeSpan: 10
 --- !u!114 &5284410013605279591
 MonoBehaviour:
   m_ObjectHideFlags: 0

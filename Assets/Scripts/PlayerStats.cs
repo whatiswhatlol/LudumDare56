@@ -21,13 +21,14 @@ public class PlayerStats : MonoBehaviour
     public bool isdead = false;
     public AudioSource hurt;
     public AudioSource die;
+
+    public int Score;
     void Awake()
     {
         // Ensure only one instance of the player stats exists
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Keep this object across scenes
         }
         else
         {
@@ -38,6 +39,7 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;  // Initialize player health to max
+        Score = 0;
     }
 
     void Update()

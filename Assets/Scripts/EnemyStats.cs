@@ -120,6 +120,7 @@ public class EnemyStats : MonoBehaviour
     {
         Debug.Log(gameObject.name + " has died.");
         EnemySpawner.Instance.OnEnemyDefeated(this);
+        PlayerStats.Instance.Score++;
         Destroy(gameObject);
 
 

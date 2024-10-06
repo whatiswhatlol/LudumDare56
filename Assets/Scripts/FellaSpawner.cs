@@ -40,7 +40,6 @@ public class FellaSpawner : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Keep this object across scenes
         }
         else
         {
@@ -235,7 +234,7 @@ public class FellaSpawner : MonoBehaviour
 
     private void randomlyAddYellow()
     {
-        if (Random.Range(1, 6) == 4)
+        if (Random.Range(1, 4) == 4)
         {
             addToColor(ColorType.Yellow, 1);
         }
@@ -244,7 +243,7 @@ public class FellaSpawner : MonoBehaviour
     {
         while (true)  // Infinite loop, breaks on stop of the game
         {
-            yield return new WaitForSeconds(6f);  // Wait for 6 seconds
+            yield return new WaitForSeconds(3f);  // Wait for 6 seconds
             randomlyAddYellow();  // Call the method to add yellow fellas
         }
     }

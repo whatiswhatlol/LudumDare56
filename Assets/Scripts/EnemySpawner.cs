@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +17,8 @@ public class EnemySpawner : MonoBehaviour
     private bool waveInProgress = false;
 
     public List<EnemyStats> enemyStats;
+
+    public List<Collider2D> outOfBoundsColliders;  // List of colliders representing out-of-bounds areas
 
     void Awake()
     {
@@ -58,7 +59,6 @@ public class EnemySpawner : MonoBehaviour
     // Start spawning the next wave of enemies
     private void StartNextWave()
     {
-        WaitForNextRound();
         currentWave++;
         int enemiesToSpawn = enemiesPerWave + (int)(currentWave * 1.33);  // Increase number of enemies per wave
         activeEnemies = enemiesToSpawn;
@@ -75,20 +75,39 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnInterval);  // Wait before spawning the next enemy
         }
     }
-    private IEnumerator WaitForNextRound()
-    {
 
-            yield return new WaitForSeconds(4f);  // Wait before spawning the next enemy
-        
-    }
-
-    // Spawn a single enemy off-screen but within bounds
+    // Spawn a single enemy off-screen but avoid out-of-bounds areas
     private void SpawnEnemyOffScreen()
     {
         Vector3 spawnPosition = GetRandomOffScreenPosition();
         GameObject temp = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemyStats.Add(temp.GetComponent<EnemyStats>()); 
+
+        // Check if enemy spawned inside any OutOfBounds area and re-randomize position if necessary
+        while (IsInOutOfBounds(spawnPosition))
+        {
+            Debug.Log("Position inside out-of-bounds: " + spawnPosition);  // Log the out-of-bounds position
+            spawnPosition = GetRandomOffScreenPosition();  // Get a new random position
+            temp.transform.position = spawnPosition;  // Update enemy's position
+        }
+
+        Debug.Log("Enemy spawned at position: " + spawnPosition);  // Log successful spawn position
+
+        enemyStats.Add(temp.GetComponent<EnemyStats>());
         temp.GetComponent<AIDestinationSetter>().target = PlayerStats.Instance.transform;
+    }
+
+    // Check if the spawn position is inside any of the OutOfBounds colliders
+    private bool IsInOutOfBounds(Vector3 position)
+    {
+        foreach (Collider2D collider in outOfBoundsColliders)
+        {
+            if (collider.OverlapPoint(position))
+            {
+                Debug.Log("Position within out-of-bounds: " + position);  // Log when position is inside out-of-bounds
+                return true;  // Return true if the position is inside any OutOfBounds collider
+            }
+        }
+        return false;  // Position is not inside any out-of-bounds colliders
     }
 
     // Get a random off-screen position just outside the visible area
