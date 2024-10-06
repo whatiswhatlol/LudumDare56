@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -12,7 +13,14 @@ public class PlayerStats : MonoBehaviour
 
     private float lastDamageTime;  // Time when the player last took damage
     private bool isRegenerating = false;
+    private float healthRegenAccumulator = 0f;  // To accumulate fractional health over time
 
+    public GameObject LivingCanvas;
+    public GameObject DeathCanvas;
+
+    public bool isdead = false;
+    public AudioSource hurt;
+    public AudioSource die;
     void Awake()
     {
         // Ensure only one instance of the player stats exists
@@ -40,6 +48,7 @@ public class PlayerStats : MonoBehaviour
     // Method to apply damage to the player
     public void TakeDamage(int damage)
     {
+        hurt.Play();
         currentHealth -= damage;  // Reduce current health by damage taken
         lastDamageTime = Time.time;  // Record the time the player took damage
         isRegenerating = false;  // Stop regeneration when taking damage
@@ -53,10 +62,11 @@ public class PlayerStats : MonoBehaviour
     }
 
     // Method to handle health regeneration
+
     private void HandleRegeneration()
     {
-        // Only regenerate health if enough time has passed since last damage and player is not at max health
-        if (Time.time >= lastDamageTime + timeToRegen && currentHealth < maxHealth)
+        // Only regenerate health if enough time has passed since the last damage and player is not at max health
+        if (Time.time >= lastDamageTime + timeToRegen && currentHealth < maxHealth && !isdead)
         {
             if (!isRegenerating)
             {
@@ -64,22 +74,35 @@ public class PlayerStats : MonoBehaviour
                 isRegenerating = true;
             }
 
-            // Regenerate health over time
-            currentHealth += Mathf.RoundToInt(regenerationRate * Time.deltaTime);
+            // Accumulate the regeneration amount over time
+            healthRegenAccumulator += regenerationRate * Time.deltaTime;
 
-            if (currentHealth > maxHealth)
+            // Only apply regeneration when enough health is accumulated (i.e., 1 full health point)
+            if (healthRegenAccumulator >= 1f)
             {
-                currentHealth = maxHealth;  // Cap health to the maxHealth value
-            }
+                int regenAmount = Mathf.FloorToInt(healthRegenAccumulator);  // Get the integer part
+                currentHealth = Mathf.Min(currentHealth + regenAmount, maxHealth);  // Increase health but cap at maxHealth
+                healthRegenAccumulator -= regenAmount;  // Subtract the applied health from the accumulator
 
-            Debug.Log("Player health: " + currentHealth);
+                Debug.Log("Player health: " + currentHealth);
+            }
+        }
+        else
+        {
+            isRegenerating = false;  // Reset the regenerating flag when not regenerating
         }
     }
+
 
     // Method to handle player death
     private void Die()
     {
+        die.Play();
         Debug.Log("Player has died.");
+        LivingCanvas.SetActive(false);
+        DeathCanvas.SetActive(true);
+        isdead = true;
+
         // Implement death logic here (e.g., game over screen, respawn, etc.)
     }
 }

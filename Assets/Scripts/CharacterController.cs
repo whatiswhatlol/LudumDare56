@@ -31,9 +31,12 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        HandleMovementInput();
-        HandleSprinting();
-        HandleAnimation();
+        if (!PlayerStats.Instance.isdead)
+        {
+            HandleMovementInput();
+            HandleSprinting();
+            HandleAnimation();
+        }
     }
 
     private void HandleMovementInput()

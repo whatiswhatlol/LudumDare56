@@ -11,6 +11,8 @@ public class FellaSpawner : MonoBehaviour
     public enum ColorType { Yellow, Green, Blue, Purple, Red }  // Enum for color selection
     public ColorType selectedColor = ColorType.Yellow;  // Default selected color
 
+    public AudioSource audio;
+
     [Header("Fellas Count")]
     public int yellowFellas = 1;
     public int greenFellas = 1;
@@ -74,57 +76,61 @@ public class FellaSpawner : MonoBehaviour
         Vector3 playerPosition = transform.position;  // Assuming you have a PlayerManager Singleton
 
         // Instantiate based on selected color and fellas count
-        switch (selectedColor)
+        if (!PlayerStats.Instance.isdead)
         {
-            case ColorType.Yellow:
-                if (yellowFellas > 0)
-                {
-                    GameObject temp = Instantiate(yellowPrefab, playerPosition, Quaternion.identity);
-                    yellowFellas--;  // Decrease fellas count
-                    fellas.Add(temp);
-                    fellaStats.Add(temp.GetComponent<FellaStats>());
-                }
-                break;
-            case ColorType.Green:
-                if (greenFellas > 0)
-                {
-                    GameObject temp = Instantiate(greenPrefab, playerPosition, Quaternion.identity);
-                    greenFellas--;
-                    fellas.Add(temp);
-                    fellaStats.Add(temp.GetComponent<FellaStats>());
+            audio.Play();
+            switch (selectedColor)
+            {
+                case ColorType.Yellow:
+                    if (yellowFellas > 0)
+                    {
+                        GameObject temp = Instantiate(yellowPrefab, playerPosition, Quaternion.identity);
+                        yellowFellas--;  // Decrease fellas count
+                        fellas.Add(temp);
+                        fellaStats.Add(temp.GetComponent<FellaStats>());
+                    }
+                    break;
+                case ColorType.Green:
+                    if (greenFellas > 0)
+                    {
+                        GameObject temp = Instantiate(greenPrefab, playerPosition, Quaternion.identity);
+                        greenFellas--;
+                        fellas.Add(temp);
+                        fellaStats.Add(temp.GetComponent<FellaStats>());
 
-                }
-                break;
-            case ColorType.Blue:
-                if (blueFellas > 0)
-                {
-                    GameObject temp = Instantiate(bluePrefab, playerPosition, Quaternion.identity);
-                    blueFellas--;
-                    fellas.Add(temp);
-                    fellaStats.Add(temp.GetComponent<FellaStats>());
+                    }
+                    break;
+                case ColorType.Blue:
+                    if (blueFellas > 0)
+                    {
+                        GameObject temp = Instantiate(bluePrefab, playerPosition, Quaternion.identity);
+                        blueFellas--;
+                        fellas.Add(temp);
+                        fellaStats.Add(temp.GetComponent<FellaStats>());
 
-                }
-                break;
-            case ColorType.Purple:
-                if (purpleFellas > 0)
-                {
-                    GameObject temp = Instantiate(purplePrefab, playerPosition, Quaternion.identity);
-                    purpleFellas--;
-                    fellas.Add(temp);
-                    fellaStats.Add(temp.GetComponent<FellaStats>());
+                    }
+                    break;
+                case ColorType.Purple:
+                    if (purpleFellas > 0)
+                    {
+                        GameObject temp = Instantiate(purplePrefab, playerPosition, Quaternion.identity);
+                        purpleFellas--;
+                        fellas.Add(temp);
+                        fellaStats.Add(temp.GetComponent<FellaStats>());
 
-                }
-                break;
-            case ColorType.Red:
-                if (redFellas > 0)
-                {
-                    GameObject temp = Instantiate(redPrefab, playerPosition, Quaternion.identity);
-                    redFellas--;
-                    fellas.Add(temp);
-                    fellaStats.Add(temp.GetComponent<FellaStats>());
+                    }
+                    break;
+                case ColorType.Red:
+                    if (redFellas > 0)
+                    {
+                        GameObject temp = Instantiate(redPrefab, playerPosition, Quaternion.identity);
+                        redFellas--;
+                        fellas.Add(temp);
+                        fellaStats.Add(temp.GetComponent<FellaStats>());
 
-                }
-                break;
+                    }
+                    break;
+            }
         }
         updateNumbers();
     }

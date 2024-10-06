@@ -23,7 +23,7 @@ public class ActivesManager : MonoBehaviour
         }
 
         // Start the new fade-in and store the tween reference
-        restTween = restImage.DOFade(0f, duration);
+        restTween = restImage.DOFade(0f, duration + 2);
     }
 
     public void StartTrainFade(float duration)
@@ -36,6 +36,6 @@ public class ActivesManager : MonoBehaviour
         }
 
         // Start the new fade-in and store the tween reference
-        trainTween = trainImage.DOFade(0f, duration);
+        trainTween = trainImage.DOFade(0f, duration + 2);
     }
 }

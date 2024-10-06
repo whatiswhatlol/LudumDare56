@@ -1,3 +1,4 @@
+using Pathfinding;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +37,11 @@ public class EnemyStats : MonoBehaviour
             {
                 AttackClosestFella();  // Attack after the engagement delay
             }
+        }
+
+        if (PlayerStats.Instance.isdead)
+        {
+            OnPlayerDeath();
         }
     }
 
@@ -118,6 +124,18 @@ public class EnemyStats : MonoBehaviour
 
 
         
+    }
+
+    public void OnPlayerDeath()
+    {
+        gameObject.GetComponent<Seeker>().enabled = false;
+        gameObject.GetComponent<AIDestinationSetter>().enabled = false;
+        gameObject.GetComponent<AILerp>().enabled = false;
+        gameObject.GetComponent<SimpleSmoothModifier>().enabled = false;
+        gameObject.GetComponent<Animator>().enabled = false;
+
+
+        gameObject.GetComponent<EnemyStats>().enabled = false;
     }
 
 }
