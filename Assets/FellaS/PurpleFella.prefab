@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6e1f167c5893749be2ad6d7be05afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  attackDamage: 10
-  attackCooldown: 1.5
+  maxHealth: 90
+  attackDamage: 70
+  attackCooldown: 1.1
 --- !u!114 &5284410013605279591
 MonoBehaviour:
   m_ObjectHideFlags: 0

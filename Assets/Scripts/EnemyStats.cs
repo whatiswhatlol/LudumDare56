@@ -64,6 +64,7 @@ public class EnemyStats : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, closestFella.transform.position) < attackRange)
             {
+                GetComponent<Animator>().SetTrigger("Attack");
                 Debug.Log(gameObject.name + " attacks " + closestFella.gameObject.name + " for " + attackDamage + " damage.");
                 closestFella.TakeDamage(attackDamage);  // Apply damage to the fella
                 lastAttackTime = Time.time;  // Reset cooldown timer

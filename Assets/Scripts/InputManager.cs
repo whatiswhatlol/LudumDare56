@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
     public KeyCode RestKey = KeyCode.E;
     FellaSpawner FellaSpawner;
     FellaStateManager FellaStateManager;
+    public ActivesManager ActivesManager;
     private void Start()
     {
         FellaSpawner = FellaSpawner.Instance;
@@ -26,6 +27,7 @@ public class InputManager : MonoBehaviour
             {
                 FellaSpawner.subtractFromColor(FellaSpawner.selectedColor, 1);
                 FellaStateManager.AssignFirstToTrain(FellaSpawner.selectedColor);
+                ActivesManager.StartTrainFade(5f);
 
             }
         }
@@ -33,6 +35,8 @@ public class InputManager : MonoBehaviour
         {
             FellaSpawner.subtractFromColor(FellaSpawner.selectedColor, 1);
             FellaStateManager.AssignFirstToRest(FellaSpawner.selectedColor);
+            Debug.Log("mimi");
+            ActivesManager.StartRestFade(3f);
 
         }
     }

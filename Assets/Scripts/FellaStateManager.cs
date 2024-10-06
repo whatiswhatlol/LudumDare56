@@ -35,7 +35,7 @@ public class FellaStateManager : MonoBehaviour
     public void AssignFirstToTrain(FellaSpawner.ColorType colorType)
     {
         int temp = fellaSpawner.getColorCount(colorType);
-        if (temp > 0)
+        if (temp >= 0)
         {
             //ADD UI REMINDER
             StartCoroutine(TrainFella(colorType));
@@ -46,9 +46,10 @@ public class FellaStateManager : MonoBehaviour
     public void AssignFirstToRest(FellaSpawner.ColorType colorType)
     {
         int temp = fellaSpawner.getColorCount(colorType);
-        if (temp > 0)
+        if (temp >= 0)
         {
             //ADD UI REMINDER
+            Debug.Log("Assign");
 
             StartCoroutine(RestFella(colorType));
         }
@@ -65,6 +66,8 @@ public class FellaStateManager : MonoBehaviour
     // Coroutine to handle fella resting
     private IEnumerator RestFella(FellaSpawner.ColorType colorType)
     {
+        Debug.Log("Begin REst");
+
         yield return new WaitForSeconds(restInterval);
         fellaSpawner.RestFella(colorType);
     }

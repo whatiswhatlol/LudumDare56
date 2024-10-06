@@ -5,12 +5,12 @@ public class HealthBar : MonoBehaviour
 {
     public Image healthFillImage;  // The fill image representing the player's health
     PlayerStats playerStats;  // Reference to the PlayerStats script
-
+    public float healthPercent;
     private void Start()
     {
         // Initialize the health bar to the player's current health
         playerStats = PlayerStats.Instance;
-        SetMaxHealth(playerStats.maxHealth);
+        SetHealth(playerStats.currentHealth);
     }
 
     private void Update()
@@ -29,7 +29,8 @@ public class HealthBar : MonoBehaviour
     public void SetHealth(int health)
     {
         // Calculate the fill amount as a percentage of the max health
-        float healthPercent = (float)health / playerStats.maxHealth;
+        healthPercent = (float)health / playerStats.maxHealth;
         healthFillImage.fillAmount = healthPercent;  // Update the image's fill amount
+
     }
 }

@@ -12,8 +12,8 @@ public class EnemySpawner : MonoBehaviour
     public int enemiesPerWave = 5;  // The number of enemies per wave
     public float spawnInterval = 1f;  // Time interval between spawning each enemy
     public float waveDelay = 5f;  // Time to wait before starting the next wave
-    private int currentWave = 0;  // The current wave number
-    private int activeEnemies = 0;  // Keeps track of how many enemies are still active
+    public int currentWave = 0;  // The current wave number
+    public int activeEnemies = 0;  // Keeps track of how many enemies are still active
 
     private bool waveInProgress = false;
 
@@ -58,8 +58,9 @@ public class EnemySpawner : MonoBehaviour
     // Start spawning the next wave of enemies
     private void StartNextWave()
     {
+        WaitForNextRound();
         currentWave++;
-        int enemiesToSpawn = enemiesPerWave + (currentWave - 1);  // Increase number of enemies per wave
+        int enemiesToSpawn = enemiesPerWave + (int)(currentWave * 1.33);  // Increase number of enemies per wave
         activeEnemies = enemiesToSpawn;
         waveInProgress = false;
         StartCoroutine(SpawnEnemiesGradually(enemiesToSpawn));
@@ -73,6 +74,12 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemyOffScreen();
             yield return new WaitForSeconds(spawnInterval);  // Wait before spawning the next enemy
         }
+    }
+    private IEnumerator WaitForNextRound()
+    {
+
+            yield return new WaitForSeconds(4f);  // Wait before spawning the next enemy
+        
     }
 
     // Spawn a single enemy off-screen but within bounds

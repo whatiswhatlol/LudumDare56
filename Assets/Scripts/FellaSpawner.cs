@@ -48,6 +48,8 @@ public class FellaSpawner : MonoBehaviour
     private void Start()
     {
         UpdateNumUI();
+        StartCoroutine(RandomlyAddYellowCoroutine()); // Start the coroutine to add yellow fellas
+
     }
 
     private void Update()
@@ -221,9 +223,25 @@ public class FellaSpawner : MonoBehaviour
     {
         //Add one of existing color
         addToColor(colorType, 2);
+        Debug.Log("Add to color");
 
     }
 
+    private void randomlyAddYellow()
+    {
+        if (Random.Range(1, 6) == 4)
+        {
+            addToColor(ColorType.Yellow, 1);
+        }
+    }
+    private IEnumerator RandomlyAddYellowCoroutine()
+    {
+        while (true)  // Infinite loop, breaks on stop of the game
+        {
+            yield return new WaitForSeconds(6f);  // Wait for 6 seconds
+            randomlyAddYellow();  // Call the method to add yellow fellas
+        }
+    }
     public void UpdateNumUI()
     {
         NumberOfFellasUpdater.UpdateNumberOfFellas();
